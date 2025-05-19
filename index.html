@@ -23,7 +23,7 @@
         }
 
         fetch('http://200.13.4.221:3000/api/total-empleados', {
-            method: 'POST',
+            method: 'GET',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({ fromDate: date })
         })
