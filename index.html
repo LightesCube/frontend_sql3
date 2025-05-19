@@ -2,10 +2,10 @@
 <html lang="es">
 <head>
     <meta charset="UTF-8">
-    <title>Consulta de Empleados</title>
+    <title>Total de Empleados desde Fecha</title>
 </head>
 <body>
-<h2>SQL3: Total de empleados desde una fecha</h2>
+<h2>Total de empleados desde una fecha</h2>
 
 <label for="fromDate">Seleccione una fecha:</label>
 <input type="date" id="fromDate">
@@ -18,24 +18,23 @@
         const date = document.getElementById('fromDate').value;
 
         if (!date) {
-            alert("Por favor seleccione una fecha.");
+            document.getElementById('resultado').textContent = "Por favor seleccione una fecha.";
             return;
         }
 
         try {
-            const response = await fetch(`http://200.13.4.238/api/total-empleados?fromDate=${encodeURIComponent(date)}`, {
-                method: 'GET',
-                headers: { 'Content-Type': 'application/json' }
+            const response = await fetch(`http://200.13.4.238/api/query3?fromDate=${encodeURIComponent(date)}`, {
+                method: 'GET'
             });
 
             if (!response.ok) {
                 throw new Error(`Error HTTP: ${response.status}`);
             }
 
-            const data = await response.json();
+            const total = await response.json();
 
             document.getElementById('resultado').textContent =
-                `Total de empleados desde ${date}: ${data.total}`;
+                `Total de empleados desde ${date}: ${total}`;
         } catch (err) {
             document.getElementById('resultado').textContent =
                 "Ocurrió un error: " + err.message;
