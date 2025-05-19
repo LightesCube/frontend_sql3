@@ -14,7 +14,7 @@
 <p id="resultado"></p>
 
 <script>
-    function consultar() {
+    async function consultar() {
         const date = document.getElementById('fromDate').value;
 
         if (!date) {
@@ -22,20 +22,24 @@
             return;
         }
 
-        fetch('http://200.13.4.221:3000/api/total-empleados', {
-            method: 'GET',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ fromDate: date })
-        })
-            .then(res => res.json())
-            .then(data => {
-                document.getElementById('resultado').textContent =
-                    `Total de empleados desde ${date}: ${data.total}`;
-            })
-            .catch(err => {
-                document.getElementById('resultado').textContent =
-                    "Ocurrió un error: " + err.message;
+        try {
+            const response = await fetch(`http://200.13.4.238/api/total-empleados?fromDate=${encodeURIComponent(date)}`, {
+                method: 'GET',
+                headers: { 'Content-Type': 'application/json' }
             });
+
+            if (!response.ok) {
+                throw new Error(`Error HTTP: ${response.status}`);
+            }
+
+            const data = await response.json();
+
+            document.getElementById('resultado').textContent =
+                `Total de empleados desde ${date}: ${data.total}`;
+        } catch (err) {
+            document.getElementById('resultado').textContent =
+                "Ocurrió un error: " + err.message;
+        }
     }
 </script>
 </body>
