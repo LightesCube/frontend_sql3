@@ -3,22 +3,107 @@
 <head>
     <meta charset="UTF-8">
     <title>Total de Empleados desde Fecha</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', sans-serif;
+            background-color: #f4f6f8;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+        }
+
+        .card {
+            background-color: #ffffff;
+            padding: 30px 40px;
+            border-radius: 16px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+            text-align: center;
+            width: 100%;
+            max-width: 400px;
+        }
+
+        h2 {
+            color: #333333;
+            margin-bottom: 20px;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: bold;
+            color: #444;
+        }
+
+        input[type="date"] {
+            padding: 10px;
+            width: 100%;
+            border: 1px solid #ccc;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            font-size: 16px;
+        }
+
+        button {
+            padding: 12px 24px;
+            background-color: #007bff;
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-size: 16px;
+            cursor: pointer;
+            transition: background-color 0.2s ease-in-out;
+        }
+
+        button:hover {
+            background-color: #0056b3;
+        }
+
+        #resultado {
+            margin-top: 20px;
+            font-size: 18px;
+            font-weight: bold;
+            color: #222;
+            transition: opacity 0.3s ease-in-out;
+        }
+
+        .error {
+            color: red;
+        }
+
+        .fade-in {
+            opacity: 0;
+            animation: fadeIn 0.6s forwards;
+        }
+
+        @keyframes fadeIn {
+            to {
+                opacity: 1;
+            }
+        }
+    </style>
 </head>
 <body>
-<h2>Total de empleados desde una fecha</h2>
+<div class="card">
+    <h2>Total de empleados desde una fecha</h2>
 
-<label for="fromDate">Seleccione una fecha:</label>
-<input type="date" id="fromDate">
-<button onclick="consultar()">Consultar</button>
+    <label for="fromDate">Seleccione una fecha:</label>
+    <input type="date" id="fromDate">
+    <button onclick="consultar()">Consultar</button>
 
-<p id="resultado"></p>
+    <p id="resultado"></p>
+</div>
 
 <script>
     async function consultar() {
+        const resultado = document.getElementById('resultado');
         const date = document.getElementById('fromDate').value;
+        resultado.classList.remove('error', 'fade-in');
 
         if (!date) {
-            document.getElementById('resultado').textContent = "Por favor seleccione una fecha.";
+            resultado.textContent = "Por favor seleccione una fecha.";
+            resultado.classList.add('error', 'fade-in');
             return;
         }
 
@@ -33,11 +118,11 @@
 
             const total = await response.json();
 
-            document.getElementById('resultado').textContent =
-                `Total de empleados desde ${date}: ${total}`;
+            resultado.textContent = `Total de empleados desde ${date}: ${total}`;
+            resultado.classList.add('fade-in');
         } catch (err) {
-            document.getElementById('resultado').textContent =
-                "Ocurrió un error: " + err.message;
+            resultado.textContent = "Ocurrió un error: " + err.message;
+            resultado.classList.add('error', 'fade-in');
         }
     }
 </script>
